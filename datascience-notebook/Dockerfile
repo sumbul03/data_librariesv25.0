@@ -67,7 +67,9 @@ RUN conda install --quiet --yes \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
-
+RUN conda install --quiet --yes -c mittner r-animation && \
+    conda clean -tipsy && \
+    fix-permissions $CONDA_DIR
 # Add Julia packages. Only add HDF5 if this is not a test-only build since
 # it takes roughly half the entire build time of all of the images on Travis
 # to add this one package and often causes Travis to timeout.
