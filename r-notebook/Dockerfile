@@ -40,3 +40,6 @@ RUN conda install --quiet --yes \
     'r-hexbin=1.27*' && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
+RUN conda install --quiet --yes -c mittner r-animation && \
+    conda clean -tipsy && \
+    fix-permissions $CONDA_DIR
