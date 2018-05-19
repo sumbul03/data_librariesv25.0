@@ -71,6 +71,7 @@ RUN conda install --quiet --yes -c mittner r-animation && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
 RUN Rscript -e "install.packages('GGally',repos='https://cloud.r-project.org/')"
+RUN Rscript -e "install.packages('glmnet',repos='https://cloud.r-project.org/')"
 # Add Julia packages. Only add HDF5 if this is not a test-only build since
 # it takes roughly half the entire build time of all of the images on Travis
 # to add this one package and often causes Travis to timeout.
