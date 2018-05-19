@@ -63,6 +63,7 @@ RUN conda install --quiet --yes \
     'r-htmltools=0.3*' \
     'r-sparklyr=0.7*' \
     'r-htmlwidgets=1.0*' \
+    'r-rstudio' \
     'r-hexbin=1.27*' && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR && \
@@ -97,14 +98,6 @@ RUN julia -e 'Pkg.init()' && \
  
 
 # You can use rsession from rstudio's desktop package as well.
-ENV RSTUDIO_PKG=rstudio-server-1.0.136-amd64.deb
-
-RUN wget -q http://download2.rstudio.org/${RSTUDIO_PKG}
-RUN dpkg -i ${RSTUDIO_PKG}
-RUN rm ${RSTUDIO_PKG}
-
-RUN apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
 
 USER $NB_USER
 
@@ -116,9 +109,7 @@ RUN jupyter serverextension enable --sys-prefix --py nbrsessionproxy
 RUN jupyter nbextension install    --sys-prefix --py nbrsessionproxy
 RUN jupyter nbextension enable     --sys-prefix --py nbrsessionproxy
 
-# The desktop package uses /usr/lib/rstudio/bin
-ENV PATH="${PATH}:/usr/lib/rstudio-server/bin"
-ENV LD_LIBRARY_PATH="/usr/lib/R/lib:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/server:/opt/conda/lib/R/lib"
+
 
  
  
