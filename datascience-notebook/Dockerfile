@@ -95,16 +95,6 @@ RUN julia -e 'Pkg.init()' && \
     fix-permissions $JULIA_PKGDIR $CONDA_DIR/share/jupyter
  
  
-FROM jupyter/r-notebook
-
-USER root
-
-RUN apt-get update && \
-	apt-get install -y --no-install-recommends \
-		libapparmor1 \
-		libedit2 \
-		lsb-release \
-		;
 
 # You can use rsession from rstudio's desktop package as well.
 ENV RSTUDIO_PKG=rstudio-server-1.0.136-amd64.deb
