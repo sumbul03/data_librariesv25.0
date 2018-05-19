@@ -63,7 +63,6 @@ RUN conda install --quiet --yes \
     'r-htmltools=0.3*' \
     'r-sparklyr=0.7*' \
     'r-htmlwidgets=1.0*' \
-    'r-rstudio' \
     'r-hexbin=1.27*' && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR && \
@@ -71,7 +70,7 @@ RUN conda install --quiet --yes \
 RUN conda install --quiet --yes -c mittner r-animation && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
-RUN conda install --quiet --yes -c mittner r-ggally && \
+RUN conda install --quiet --yes -c bioconda r-ggally && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
 # Add Julia packages. Only add HDF5 if this is not a test-only build since
@@ -97,17 +96,8 @@ RUN julia -e 'Pkg.init()' && \
  
  
 
-# You can use rsession from rstudio's desktop package as well.
 
-USER $NB_USER
 
-RUN pip install git+https://github.com/jupyterhub/nbserverproxy.git
-RUN jupyter serverextension enable --sys-prefix --py nbserverproxy
-
-RUN pip install git+https://github.com/jupyterhub/nbrsessionproxy.git
-RUN jupyter serverextension enable --sys-prefix --py nbrsessionproxy
-RUN jupyter nbextension install    --sys-prefix --py nbrsessionproxy
-RUN jupyter nbextension enable     --sys-prefix --py nbrsessionproxy
 
 
 
