@@ -50,6 +50,12 @@ RUN conda install --quiet --yes \
 RUN conda install --quiet --yes -c mittner r-animation && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
+RUN conda install --quiet --yes -c conda-forge nbrsessionproxy && \
+    conda clean -tipsy && \
+    fix-permissions $CONDA_DIR
+RUN jupyter serverextension enable  --py nbrsessionproxy
+RUN jupyter nbextension install --py nbrsessionproxy
+RUN jupyter nbextension enable  --py nbrsessionproxy
 RUN Rscript -e "install.packages('GGally',repos='https://cloud.r-project.org/')"
 RUN Rscript -e "install.packages('glmnet',repos='https://cloud.r-project.org/',dependencies=TRUE)"
 RUN Rscript -e "install.packages('tm',repos='https://cloud.r-project.org/')"
