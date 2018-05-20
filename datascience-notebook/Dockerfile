@@ -50,7 +50,7 @@ RUN conda install --quiet --yes \
 RUN conda install --quiet --yes -c mittner r-animation && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
-RUN conda install --quiet --yes -c conda-forge nbrsessionproxy && \
+RUN conda install --quiet --yes -c conda-forge jupyter_nbextensions_configurator && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
 RUN jupyter serverextension enable  --py nbrsessionproxy
