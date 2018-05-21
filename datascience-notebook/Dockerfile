@@ -72,7 +72,9 @@ RUN Rscript -e "install.packages('quanteda',repos='https://cloud.r-project.org/'
 RUN Rscript -e "install.packages('irlba',repos='https://cloud.r-project.org/')"
 RUN Rscript -e "install.packages('doSNOW',repos='https://cloud.r-project.org/',dependencies=TRUE)"
 RUN Rscript -e "install.packages('Rtsne',repos='https://cloud.r-project.org/',dependencies=TRUE)"
-
+RUN pip install jupyterthemes
+RUN pip install --upgrade jupyterthemes
+RUN jt -t chesterish
 
 
 # Add Julia packages. Only add HDF5 if this is not a test-only build since
@@ -81,9 +83,7 @@ RUN Rscript -e "install.packages('Rtsne',repos='https://cloud.r-project.org/',de
 #
 # Install IJulia as jovyan and then move the kernelspec out
 # to the system share location. Avoids problems with runtime UID change not
-# taking effect properly on the .local folder in the jovyan home dir.
-
-
+# taking effect properly on the .local folder in the jovyan home di
 
 
 
