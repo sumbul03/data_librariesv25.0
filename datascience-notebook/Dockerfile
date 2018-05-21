@@ -74,7 +74,7 @@ RUN Rscript -e "install.packages('doSNOW',repos='https://cloud.r-project.org/',d
 RUN Rscript -e "install.packages('Rtsne',repos='https://cloud.r-project.org/',dependencies=TRUE)"
 RUN git clone https://github.com/Calysto/notebook-extensions.git
 WORKDIR "/notebook-extensions"
-RUN jupyter nbextension install calysto --user
+RUN jupyter nbextension install calysto 
 RUN jupyter nbextension enable calysto/document-tools/main
 RUN jupyter nbextension enable calysto/cell-tools/main
 RUN jupyter nbextension enable calysto/spell-check/main
