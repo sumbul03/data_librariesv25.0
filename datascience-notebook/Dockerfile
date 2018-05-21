@@ -72,10 +72,15 @@ RUN Rscript -e "install.packages('quanteda',repos='https://cloud.r-project.org/'
 RUN Rscript -e "install.packages('irlba',repos='https://cloud.r-project.org/')"
 RUN Rscript -e "install.packages('doSNOW',repos='https://cloud.r-project.org/',dependencies=TRUE)"
 RUN Rscript -e "install.packages('Rtsne',repos='https://cloud.r-project.org/',dependencies=TRUE)"
-RUN pip install jupyterthemes
-RUN pip install --upgrade jupyterthemes
-RUN jt -t chesterish
-
+RUN git clone https://github.com/Calysto/notebook-extensions.git
+WORKDIR "/notebook-extensions"
+RUN jupyter nbextension install calysto --user
+RUN jupyter nbextension enable calysto/document-tools/main
+RUN jupyter nbextension enable calysto/cell-tools/main
+RUN jupyter nbextension enable calysto/spell-check/main
+RUN jupyter nbextension enable calysto/publish/main
+RUN jupyter nbextension enable calysto/submit/main
+RUN jupyter nbextension enable calysto/annotate/main
 
 # Add Julia packages. Only add HDF5 if this is not a test-only build since
 # it takes roughly half the entire build time of all of the images on Travis
