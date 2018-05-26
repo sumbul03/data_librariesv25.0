@@ -72,15 +72,40 @@ RUN Rscript -e "install.packages('quanteda',repos='https://cloud.r-project.org/'
 RUN Rscript -e "install.packages('irlba',repos='https://cloud.r-project.org/')"
 RUN Rscript -e "install.packages('doSNOW',repos='https://cloud.r-project.org/',dependencies=TRUE)"
 RUN Rscript -e "install.packages('Rtsne',repos='https://cloud.r-project.org/',dependencies=TRUE)"
-RUN git clone https://github.com/Calysto/notebook-extensions.git
-WORKDIR "/notebook-extensions"
-RUN jupyter nbextension install calysto 
-RUN jupyter nbextension enable calysto/document-tools/main
-RUN jupyter nbextension enable calysto/cell-tools/main
-RUN jupyter nbextension enable calysto/spell-check/main
-RUN jupyter nbextension enable calysto/publish/main
-RUN jupyter nbextension enable calysto/submit/main
-RUN jupyter nbextension enable calysto/annotate/main
+
+USER root
+
+RUN apt-get update && \
+	apt-get install -y --no-install-recommends \
+		libapparmor1 \
+		libedit2 \
+		lsb-release \
+		;
+
+# You can use rsession from rstudio's desktop package as well.
+ENV RSTUDIO_PKG=rstudio-server-1.0.136-amd64.deb
+
+RUN wget -q http://download2.rstudio.org/${RSTUDIO_PKG}
+RUN dpkg -i ${RSTUDIO_PKG}
+RUN rm ${RSTUDIO_PKG}
+
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+USER $NB_USER
+
+RUN pip install git+https://github.com/jupyterhub/nbserverproxy.git
+RUN jupyter serverextension enable --sys-prefix --py nbserverproxy
+
+RUN pip install git+https://github.com/jupyterhub/nbrsessionproxy.git
+RUN jupyter serverextension enable --sys-prefix --py nbrsessionproxy
+RUN jupyter nbextension install    --sys-prefix --py nbrsessionproxy
+RUN jupyter nbextension enable     --sys-prefix --py nbrsessionproxy
+
+# The desktop package uses /usr/lib/rstudio/bin
+ENV PATH="${PATH}:/usr/lib/rstudio-server/bin"
+ENV LD_LIBRARY_PATH="/usr/lib/R/lib:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/server:/opt/conda/lib/R/lib"
+
 
 # Add Julia packages. Only add HDF5 if this is not a test-only build since
 # it takes roughly half the entire build time of all of the images on Travis
