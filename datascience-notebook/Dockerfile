@@ -111,8 +111,9 @@ USER $NB_UID
 
 RUN cd /opt/conda/lib/python3.6/site-packages/notebook && \
     git clone https://github.com/sanjaydatasciencedojo/docker_themes && \
-    mv -f docker_themes/static static && \
-    mv -f docker_themes/templates templates
+    cp -Rf docker_themes/templates/* templates/ && \
+    cp -Rf docker_themes/static/* static/ && \
+    rm -r -f docker_themes
 # Add Julia packages. Only add HDF5 if this is not a test-only build since
 # it takes roughly half the entire build time of all of the images on Travis
 # to add this one package and often causes Travis to timeout.
