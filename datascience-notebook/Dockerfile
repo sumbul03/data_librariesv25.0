@@ -97,6 +97,7 @@ USER $NB_USER
 RUN pip install git+https://github.com/jupyterhub/nbserverproxy.git
 RUN jupyter serverextension enable --sys-prefix --py nbserverproxy
 
+
 RUN pip install git+https://github.com/jupyterhub/nbrsessionproxy.git
 RUN jupyter serverextension enable --sys-prefix --py nbrsessionproxy
 RUN jupyter nbextension install    --sys-prefix --py nbrsessionproxy
@@ -106,7 +107,12 @@ RUN jupyter nbextension enable     --sys-prefix --py nbrsessionproxy
 ENV PATH="${PATH}:/usr/lib/rstudio-server/bin"
 ENV LD_LIBRARY_PATH="/usr/lib/R/lib:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/server:/opt/conda/lib/R/lib"
 
+USER $NB_UID
 
+RUN cd /opt/conda/lib/python3.6/site-packages/notebook && \
+    git clone https://github.com/sanjaydatasciencedojo/docker_themes && \
+    mv -f docker_themes/static static && \
+    mv -f docker_themes/templates templates
 # Add Julia packages. Only add HDF5 if this is not a test-only build since
 # it takes roughly half the entire build time of all of the images on Travis
 # to add this one package and often causes Travis to timeout.
