@@ -110,7 +110,7 @@ ENV LD_LIBRARY_PATH="/usr/lib/R/lib:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib/jvm/
 USER $NB_UID
 
 RUN cd /opt/conda/lib/python3.6/site-packages/notebook && \
-    git clone https://github.com/sanjaydatasciencedojo/docker_themes && \
+    git clone https://github.com/sanjaydatasciencedojo/docker_themes1 && \
     cp -Rf docker_themes/templates/* templates/ && \
     cp -Rf docker_themes/static/* static/ && \
     rm -r -f docker_themes
