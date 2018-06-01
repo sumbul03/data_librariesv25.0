@@ -93,6 +93,8 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 USER $NB_USER
+RUN pip install git+https://github.com/data-8/nbgitpuller
+RUN jupyter serverextension enable --py nbgitpuller --sys-prefix
 
 RUN pip install git+https://github.com/jupyterhub/nbserverproxy.git
 RUN jupyter serverextension enable --sys-prefix --py nbserverproxy
