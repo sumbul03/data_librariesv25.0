@@ -53,6 +53,9 @@ RUN conda install --quiet --yes -c mittner r-animation && \
 RUN conda install --quiet --yes -c conda-forge jupyter_nbextensions_configurator && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
+RUN conda install --quiet --yes -c conda-forge pydotplus && \
+    conda clean -tipsy && \
+    fix-permissions $CONDA_DIR
 RUN Rscript -e "install.packages('GGally',repos='https://cloud.r-project.org/')"
 RUN Rscript -e "install.packages('glmnet',repos='https://cloud.r-project.org/',dependencies=TRUE)"
 RUN Rscript -e "install.packages('tm',repos='https://cloud.r-project.org/')"
@@ -115,9 +118,7 @@ RUN cd /opt/conda/lib/python3.6/site-packages/notebook && \
     git clone https://github.com/sanjaydatasciencedojo/docker_themes1 && \
     cp -Rf docker_themes1/templates/* templates/ && \
     cp -Rf docker_themes1/static/* static/ && \
-    rm -r -f docker_themes1 && \
-    cd /home/jovyan && \
-    rm -r -f Zen-Coding-Exercises/ReadOnly
+    rm -r -f docker_themes1
 # Add Julia packages. Only add HDF5 if this is not a test-only build since
 # it takes roughly half the entire build time of all of the images on Travis
 # to add this one package and often causes Travis to timeout.
