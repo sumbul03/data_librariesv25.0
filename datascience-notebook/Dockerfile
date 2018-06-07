@@ -53,9 +53,7 @@ RUN conda install --quiet --yes -c mittner r-animation && \
 RUN conda install --quiet --yes -c conda-forge jupyter_nbextensions_configurator && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
-RUN conda install --quiet --yes -c conda-forge pydotplus && \
-    conda clean -tipsy && \
-    fix-permissions $CONDA_DIR
+
 RUN Rscript -e "install.packages('GGally',repos='https://cloud.r-project.org/')"
 RUN Rscript -e "install.packages('glmnet',repos='https://cloud.r-project.org/',dependencies=TRUE)"
 RUN Rscript -e "install.packages('tm',repos='https://cloud.r-project.org/')"
@@ -75,6 +73,8 @@ RUN Rscript -e "install.packages('quanteda',repos='https://cloud.r-project.org/'
 RUN Rscript -e "install.packages('irlba',repos='https://cloud.r-project.org/')"
 RUN Rscript -e "install.packages('doSNOW',repos='https://cloud.r-project.org/',dependencies=TRUE)"
 RUN Rscript -e "install.packages('Rtsne',repos='https://cloud.r-project.org/',dependencies=TRUE)"
+RUN Rscript -e "install.packages('ISLR',repos='https://cloud.r-project.org/',dependencies=TRUE)"
+RUN Rscript -e "install.packages('tree',repos='https://cloud.r-project.org/',dependencies=TRUE)"
 
 USER root
 
@@ -96,6 +96,7 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 USER $NB_USER
+RUN pip install pydotplus
 RUN pip install git+https://github.com/data-8/nbgitpuller
 RUN jupyter serverextension enable --py nbgitpuller --sys-prefix
 
