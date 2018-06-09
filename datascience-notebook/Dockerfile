@@ -86,7 +86,7 @@ RUN apt-get update && \
 		;
 
 # You can use rsession from rstudio's desktop package as well.
-
+RUN usermod -aG sudo $NB_UID
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
