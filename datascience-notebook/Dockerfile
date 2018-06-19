@@ -92,6 +92,7 @@ RUN apt-get clean && \
 
 USER $NB_USER
 RUN pip install pydotplus
+RUN pip install nltk
 RUN pip install sklearn-pandas
 RUN pip install git+https://github.com/data-8/nbgitpuller
 RUN jupyter serverextension enable --py nbgitpuller --sys-prefix
