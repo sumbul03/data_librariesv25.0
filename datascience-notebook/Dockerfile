@@ -86,6 +86,12 @@ RUN apt-get update && \
 		;
 
 # You can use rsession from rstudio's desktop package as well.
+ENV RSTUDIO_PKG=rstudio-server-1.1.453-amd64.deb
+
+RUN wget -q http://download2.rstudio.org/${RSTUDIO_PKG}
+RUN dpkg -i ${RSTUDIO_PKG}
+RUN rm ${RSTUDIO_PKG}
+
 RUN usermod -aG sudo $NB_USER
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -97,6 +103,18 @@ RUN pip install sklearn-pandas
 RUN pip install git+https://github.com/data-8/nbgitpuller
 RUN jupyter serverextension enable --py nbgitpuller --sys-prefix
 
+RUN pip install git+https://github.com/jupyterhub/nbserverproxy.git
+RUN jupyter serverextension enable --sys-prefix --py nbserverproxy
+
+
+RUN pip install git+https://github.com/jupyterhub/nbrsessionproxy.git
+RUN jupyter serverextension enable --sys-prefix --py nbrsessionproxy
+RUN jupyter nbextension install    --sys-prefix --py nbrsessionproxy
+RUN jupyter nbextension enable     --sys-prefix --py nbrsessionproxy
+
+# The desktop package uses /usr/lib/rstudio/bin
+ENV PATH="${PATH}:/usr/lib/rstudio-server/bin"
+ENV LD_LIBRARY_PATH="/usr/lib/R/lib:/lib:/usr/lib/x86_64-linux-gnu:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/server:/opt/conda/lib/R/lib"
 
 USER $NB_UID
 
