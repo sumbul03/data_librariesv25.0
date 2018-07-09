@@ -2,7 +2,7 @@ FROM sanjaydatasciencedojo/data_librariesv18.0
 USER root
 ENV RSTUDIO_PKG=rstudio-server-1.1.442-amd64.deb
 RUN wget -q http://download2.rstudio.org/${RSTUDIO_PKG}
-RUN dpkg -i ${RSTUDIO_PKG}
+RUN dpkg -i ${RSTUDIO_PKG} || true
 RUN rm ${RSTUDIO_PKG}
 USER $NB_USER
 RUN pip install git+https://github.com/jupyterhub/nbrsessionproxy.git
